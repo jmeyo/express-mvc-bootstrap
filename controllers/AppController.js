@@ -1,7 +1,7 @@
 var fs = require('fs')
 	, inflection = require('../lib/inflection');
 
-module.exports = function(app) {
+module.exports = function(app,dp) {
 	
 	// app.get("/favicon.ico", function() {}); // Required if you delete the favicon.ico from public
 	
@@ -15,7 +15,7 @@ module.exports = function(app) {
 	app.del("/:controller", router);   			// Delete all
 	
 	// Singular - different variable to clarify routing
-	app.get("/:controller/:id.:format?", router);  	// To support controller/index	
+	app.get("/:controller/:id.:format?", router);  	    // To support controller/index	
 	app.get("/:controller/:id/:action", router);		// Show edit
 	app.put("/:controller/:id", router);				// Update
 	app.del("/:controller/:id", router);				// Delete	

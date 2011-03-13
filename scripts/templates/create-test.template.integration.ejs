@@ -10,7 +10,10 @@
 /**
  * Dependencies
  */
-var assert = require('assert'), inflection = require('lib/inflection'), mongoose = require('mongoose'), should = require('should'); 
+var assert = require('assert'), inflection = require('lib/inflection'), should = require('should'); 
+
+// Force into test environment
+process.env.NODE_ENV = 'test';
 
 /**
  * Variables to drive testing
@@ -130,20 +133,19 @@ module.exports = {
 			});		
 						
 		},
-		'Viewing a deleted object returns the default error page': function(done){  // Should this really be a 404???			
+		'Viewing a deleted object returns a 500 error': function(done){  // This should really be a 404 :(			
 			
 			assert.response(app, {
 			    url: '/' + model + '/' + id,
 			    method: 'GET'
 			}, function(res) {
-				res.statusCode.should.equal(200);
-				res.body.should.include.string('Sorry an error has occurred');
+				res.statusCode.should.equal(500);
 				done();
 			});	
 						
 		},
 		tearDown: function(done){
-		   mongoose.disconnect();
+		   //
 		   done();
 		}
 		

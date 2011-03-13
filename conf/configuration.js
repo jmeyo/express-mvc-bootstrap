@@ -3,21 +3,48 @@
  * Default configuration manager
  * Inject app and express reference
  */
-module.exports = function(app,express) {
-		
-	// DEVELOPMENT
-	app.configure('development', function() {
-	  require("./development.js")(app,express);
-	});
 
-	// TEST
-	app.configure('test', function() {
-		require("./test.js")(app,express);
-	});
-	
-	// PRODUCTION
-	app.configure('production', function() {
-		require("./production.js")(app,express);
-	});		
+module.exports = {
+		
+		initialise: function(app) {		
+
+			// DEVELOPMENT
+			app.configure('development', function() {
+			  var configuration = require("./development.js");
+			  configuration.initialise(app);
+			});
+		
+			// TEST
+			app.configure('test', function() {
+				var configuration = require("./test.js");
+			    configuration.initialise(app);
+			});
+			
+			// PRODUCTION
+			app.configure('production', function() {
+				var configuration = require("./production.js");
+				configuration.initialise(app);
+			});				
+		},
+		dbsetup: function(app) {
+			
+			// DEVELOPMENT
+			app.configure('development', function() {
+			  var configuration = require("./development.js");
+			  configuration.dbsetup(app);
+			});
+		
+			// TEST
+			app.configure('test', function() {
+				var configuration = require("./test.js");
+			  configuration.dbsetup(app);
+			});
+			
+			// PRODUCTION
+			app.configure('production', function() {
+				var configuration = require("./production.js");
+				configuration.dbsetup(app);
+			});					
+		}
 
 }

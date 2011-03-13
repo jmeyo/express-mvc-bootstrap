@@ -1,8 +1,13 @@
 /**
  * Module dependencies.
  */
-var fs = require('fs'),express = require('express'),
-	 mongoose = require('mongoose'), nodepath = require('path');
+var fs = require('fs'),
+	express = require('express'),
+	// mongoose = require('mongoose'),
+	sys = require('sys'),
+	sql = require('sequelize'),	
+	nodepath = require('path'),
+	dp = require ('./lib/DataProvider').DP;
 
 var path = __dirname;
 var app;
@@ -13,15 +18,19 @@ var app;
 exports.boot = function(params){
 	
   //Create our express instance
-  app = express.createServer();	
-	
-   // Import configuration
-  require(path + '/conf/configuration.js')(app,express);
+  app = express.createServer();	  
+  
+  // Import configuration
+  var config = require(path + '/conf/configuration.js');
+  config.initialise(app);
   
   // Bootstrap application
   bootApplication(app);
   bootModels(app);
   bootControllers(app);
+  
+  // Close off database setup
+  config.dbsetup(app);
   
   return app;
   
@@ -44,10 +53,10 @@ function bootApplication(app) {
   app.use(express.static(path + '/public'));  // Before router to enable dynamic routing
   app.use(app.router);
 
-  // Example 500 page
+  /* Example 500 page
   app.error(function(err, req, res){
     res.render('500',{error:err});
-  });
+  });*/
   
   // Example 404 page via simple Connect middleware
   app.use(function(req, res){
@@ -85,49 +94,17 @@ function bootApplication(app) {
 //Bootstrap models 
 function bootModels(app) {
 	
-  fs.readdir(path + '/models', function(err, files){
-    if (err) throw err;
+	var files = fs.readdirSync(path + '/models');
     files.forEach(function(file){
-    	bootModel(app, file);
+   	    var name = file.replace('.js', '');
+   	    if(name != 'README') {
+   			dp.addModel(path + '/models/'+ name,name);
+   	    }
     });
-  });
-  
-  // Connect to mongoose
-  mongoose.connect(app.set('db-uri'));
-  
-}
-
-// Bootstrap controllers
-function bootControllers(app) {
-  fs.readdir(path + '/controllers', function(err, files){
-    if (err) throw err;
-    files.forEach(function(file){    	
-    	// bootController(app, file);    		
-    });
-	
-
-  });
-  
-  require(path + '/controllers/AppController')(app);			// Include
-  
-}
-
-// simplistic model support
-function bootModel(app, file) {
-
-    var name = file.replace('.js', ''),
-    	schema = require(path + '/models/'+ name);				// Include the mongoose file        
     
 }
 
-// Load the controller, link to its view file from here
-function bootController(app, file) {
-	
-	var name = file.replace('.js', ''),
-    	controller = path + '/controllers/' + name,   // full controller to include
-    	template = name.replace('Controller','').toLowerCase();									// template folder for html - remove the ...Controller part.
-	
-	// Include the controller
-	// require(controller)(app,template);			// Include
-	
+// Bootstrap controllers
+function bootControllers(app,dp) {
+  require(path + '/controllers/AppController')(app);			// Include core router  
 }

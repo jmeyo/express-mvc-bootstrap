@@ -1,5 +1,9 @@
 
-var assert = require('assert'), should = require('should'), mongoose = require('mongoose');
+var assert = require('assert'), should = require('should');
+
+// Does this work?
+process.env.NODE_ENV = 'test';
+	
 var app = require('app').boot();
 
 /**
@@ -27,7 +31,6 @@ module.exports = {
 			});						
 		},
 		tearDown: function(done){
-		   mongoose.disconnect();
 		   done();
 		}
 		

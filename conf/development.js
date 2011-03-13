@@ -2,9 +2,17 @@
 /**
  * DEVELOPMENT Environment settings
  */
-module.exports = function(app,express) {
-		
-	app.set('db-uri', 'mongodb://localhost/mvc-development');	       
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+var	dp = require ('../lib/DataProvider').DP, express = require('express');
+
+module.exports = {
+		initialise: function(app) {
+			app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));	
+			dp.connection = {name:'eb',user:'root',password:'slydog'}; 
+			dp.connect({disableTableNameModification: true, disableLogging: false});
+		},
+		dbsetup: function(app) {
+			// Drop & resync any changes to the database
+			dp.dropSyncDatabase();			
+		}
 	
 }
