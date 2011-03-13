@@ -15,11 +15,11 @@ You need to manually install:
 And then install via NPM:
 
 * http://expressjs.com/ Express: Application Framework for Node.js
-* http://sequelizerjs.com/ Sequelizer: Node.JS ORM for MySQL
 * http://embeddedjs.com/ ejs: EmbeddedJS Templating
 
 But I've included in this project:
 
+* http://sequelizerjs.com/ Sequelizer: Node.JS ORM for MySQL - included as I want to keep it on the devel version for now.
 * http://jquery.com/ jQuery: Javascript Library
 * http://jqueryui.com/ jQuery UI: UI Library
 * http://taitems.tumblr.com/post/482577430/introducing-aristo-a-jquery-ui-theme jQuery Aristo Template: Fantastic looking jQuery UI Template.
