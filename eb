@@ -63,13 +63,13 @@ function runLauncher(appLauncher) {
 	// Check if this is a bootstrap application?
 	if(isLibrary()) {
 		console.log('\x1b[1mDo not run this from the bootstrap library folder, please run from an empty directory or a bootstrapped app, or please run "npm install"\x1b[0m\r\n');		
-		return;
+		//return;
 	}
 	
 	// Check if this is a bootstrap application?
 	if(!isBootstrap() && appLauncher.command != 'create-app') {
 		console.log('\x1b[1mApplication not bootstrapped - you must run:\x1b[0m eb create-app\r\n');
-		return;
+		//return;
 	}
 	
 	switch(appLauncher.command) {
@@ -114,9 +114,15 @@ function isBootstrap() {
  * @param appLauncher
  * Runs by default from path where bootstrap runs via __dirname.
  */
-function runScript(scriptLauncher) {	
+function runScript(scriptLauncher) {
+    
+    // Include application utils
+    var utils = require(path + '/utils').Utils;
+    
+    // Include the script itself
 	var script = require(bootstrapPath + '/scripts/'+ scriptLauncher.name);
-	script.execute(scriptLauncher.params,path);
+	script.execute(scriptLauncher.params, path, utils);
+	
 }
 
 /**
@@ -228,12 +234,17 @@ function createApplicationAt(path) {
 	mkdir(path + '/views',function() {	
 		copy(bootstrapPath + '/views/*',path + '/views');
 	});
+
 	mkdir(path + '/public',function() {
 		copy(bootstrapPath + '/public/*',path + '/public');
 	});
 	
 	mkdir(path + '/lib',function() {
     	copy(bootstrapPath + '/lib/*',path + '/lib');
+    });
+
+    mkdir(path + '/vendor',function() {
+        copy(bootstrapPath + '/vendor/*',path + '/vendor');
     });
     
     mkdir(path + '/tests',function() {

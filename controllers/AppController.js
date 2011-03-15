@@ -1,5 +1,5 @@
-var fs = require('fs')
-	, inflection = require('../lib/inflection');
+var fs = require('fs'),
+    inflection = require('../vendor/inflection').Inflection;
 
 module.exports = function(app,dp) {
 	

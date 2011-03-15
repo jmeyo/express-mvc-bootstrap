@@ -3,7 +3,6 @@
  */
 var fs = require('fs'),
 	express = require('express'),
-	// mongoose = require('mongoose'),
 	sys = require('sys'),
 	sql = require('sequelize'),	
 	nodepath = require('path'),
@@ -46,6 +45,7 @@ function bootApplication(app) {
    
    // launch
   // app.use(express.logger({ format: ':method :url :status' }));
+  
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
@@ -53,6 +53,9 @@ function bootApplication(app) {
   app.use(express.static(path + '/public'));  // Before router to enable dynamic routing
   app.use(app.router);
 
+  // Hook up our simple services register
+  app.services = require(path + "/lib/Services");
+  
   /* Example 500 page
   app.error(function(err, req, res){
     res.render('500',{error:err});
@@ -68,6 +71,9 @@ function bootApplication(app) {
   app.register('.html', require('ejs'));
   app.set('view engine', 'html');
 
+  // Add the services
+  app.services = require('./lib/Services');
+  
   // Some dynamic view helpers
   app.dynamicHelpers({
   

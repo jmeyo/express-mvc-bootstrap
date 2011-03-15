@@ -1,6 +1,5 @@
 var ejs = require('ejs'), fs = require('fs'), path = require('path'),
-    inflection = require('../lib/inflection');
-
+    inflection = require('../vendor/inflection').Inflection;
 
 /**
  * Script to create a default view, requires the model to exist

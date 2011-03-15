@@ -1,10 +1,11 @@
 var ejs = require('ejs'), fs = require('fs'), path = require('path'),
-          inflection = require('../lib/inflection');
+          inflection = require('../vendor/inflection');
 
 
 /**
  * Script to create a default model
  */
+
 exports.execute = function(params, appPath) {
 
   if (params.length == 0) {
@@ -16,7 +17,7 @@ exports.execute = function(params, appPath) {
    * Create the model based on a singular (e.g. people becomes person, users
    * becomes user)
    */
-  var modelName = params[0].singularize();
+  var modelName = inflection.singularize(params[0]);
   if (modelName != params[0]) {
     console.log('Creating model using singular not plural: ' + modelName);
   }
