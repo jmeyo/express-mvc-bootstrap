@@ -116,12 +116,9 @@ function isBootstrap() {
  */
 function runScript(scriptLauncher) {
     
-    // Include application utils
-    var utils = require(path + '/utils').Utils;
-    
     // Include the script itself
 	var script = require(bootstrapPath + '/scripts/'+ scriptLauncher.name);
-	script.execute(scriptLauncher.params, path, utils);
+	script.execute(scriptLauncher.params, path);
 	
 }
 

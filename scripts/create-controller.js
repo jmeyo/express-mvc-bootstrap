@@ -1,5 +1,5 @@
 var ejs = require('ejs'), fs = require('fs'), path = require('path'),
-    inflection = require('../vendor/inflection').Inflection;
+    inflection = require('../lib/inflection');
 
 
 /**

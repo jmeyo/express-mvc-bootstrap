@@ -1,5 +1,5 @@
 var ejs = require('ejs'), fs = require('fs'), path = require('path'),
-          inflection = require('../vendor/inflection');
+          inflection = require('../lib/inflection');
 
 
 /**
@@ -17,7 +17,7 @@ exports.execute = function(params, appPath) {
    * Create the model based on a singular (e.g. people becomes person, users
    * becomes user)
    */
-  var modelName = inflection.singularize(params[0]);
+  var modelName = params[0].singularize();
   if (modelName != params[0]) {
     console.log('Creating model using singular not plural: ' + modelName);
   }
