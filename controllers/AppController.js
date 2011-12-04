@@ -6,9 +6,9 @@ module.exports = function(app) {
 	// app.get("/favicon.ico", function() {}); // Required if you delete the favicon.ico from public
 	
 	// Plural
-	app.get("/:controller?", router);				        // Index
 	app.get("/:controller.:format?", router);				// Index
 	app.get("/:controller/:from-:to.:format?", router);		// Index
+	app.get("/:controller?", router);				        // Index
 	
 	// Plural Create & Delete
 	app.post("/:controller", router);			// Create
